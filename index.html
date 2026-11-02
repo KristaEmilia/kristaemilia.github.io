@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Krista Poutanen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Krista Poutanen – sairaanhoitaja (AMK) ja FM, Human-Technology Interaction. Portfolio: UX-tutkimus, prototypointi ja terveysteknologia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..650,100&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: kiinteä sivupalkki (kuva, nimi, valikko, yhteystiedot) maastokartan korkeuskäyrien päällä + lukupalsta; projektit kuvakortteina */
+:root {
+  --bg: #e8ece4;        /* jäkälänharmaa */
+  --surface: #f6f7f2;   /* koivun kuori */
+  --side: #dfe5d8;      /* sammal varjossa */
+  --ink: #1c2920;       /* kuusi */
+  --muted: #56645a;
+  --line: #c9d1c2;
+  --moss: #4d6a37;      /* sammal */
+  --moss-soft: #dbe4cf;
+  --lake: #2f6577;      /* järvi */
+  --berry: #9e3b3f;     /* puolukka */
+  --contour: #4d6a37;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131915; --surface: #1b231d; --side: #172019; --ink: #e3e8de; --muted: #9eab9f;
+    --line: #2c372f; --moss: #a3c283; --moss-soft: #26331f; --lake: #86bccb; --berry: #e18a8c; --contour: #a3c283;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131915; --surface: #1b231d; --side: #172019; --ink: #e3e8de; --muted: #9eab9f;
+  --line: #2c372f; --moss: #a3c283; --moss-soft: #26331f; --lake: #86bccb; --berry: #e18a8c; --contour: #a3c283;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.65;
+}
+a { color: var(--lake); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--lake); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3, h4 { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 560; line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--moss); }
+
+/* Shell */
+.shell { display: grid; grid-template-columns: minmax(280px, 340px) 1fr; min-height: 100%; }
+.shell > * { min-width: 0; }
+
+/* Sidebar */
+.side { position: relative; background: var(--side); border-right: 1px solid var(--line); overflow: hidden; }
+.side canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.4; }
+.side-inner {
+  position: sticky; top: 0; z-index: 1; display: grid; gap: 28px; align-content: start;
+  padding-block: 48px; padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: 28px;
+  max-height: 100vh; overflow-y: auto;
+}
+.portrait { width: 132px; height: 132px; max-width: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 35%; border: 3px solid var(--surface); }
+.who { display: grid; gap: 8px; }
+.who h1 { font-size: 2.1rem; }
+.who .degrees { color: var(--muted); font-size: 0.98rem; line-height: 1.45; }
+.side nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.side nav a { display: flex; align-items: center; gap: 10px; padding: 7px 0; color: var(--ink); text-decoration: none; font-weight: 500; }
+.side nav a::before { content: ""; width: 18px; height: 1px; background: var(--moss); transition: width .2s ease; }
+.side nav a:hover::before, .side nav a[aria-current="true"]::before { width: 34px; }
+.side nav a[aria-current="true"] { color: var(--moss); }
+.side-contact { display: grid; gap: 10px; font-size: 0.95rem; }
+.copy { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.copy button { font: inherit; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--moss); background: transparent; color: var(--moss); padding: 2px 10px; border-radius: 999px; cursor: pointer; }
+.copy button:hover { background: var(--moss-soft); }
+.theme-toggle { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: 0.88rem; font-weight: 600; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px 6px 8px; cursor: pointer; }
+.theme-toggle:hover { border-color: var(--moss); }
+.theme-toggle .knob { width: 34px; height: 20px; border-radius: 999px; background: var(--moss-soft); position: relative; flex: none; }
+.theme-toggle .knob::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--moss); transition: transform .2s ease; }
+.theme-toggle[aria-pressed="true"] .knob::after { transform: translateX(14px); }
+@media (prefers-reduced-motion: reduce) { .theme-toggle .knob::after { transition: none; } }
+
+/* Main */
+main { padding-left: clamp(24px, 5vw, 72px); padding-right: max(clamp(16px, 5vw, 72px), env(safe-area-inset-right, 0px)); padding-block: 56px 40px; display: grid; gap: 88px; max-width: 1000px; }
+.lead h2 { font-size: clamp(2.2rem, 5vw, 3.6rem); letter-spacing: -0.01em; max-width: 16ch; }
+.lead h2 em { font-style: italic; color: var(--moss); }
+.lead { display: grid; gap: 22px; }
+.lead p:not(.eyebrow) { font-size: 1.18rem; color: var(--muted); max-width: 58ch; }
+
+.sec { display: grid; gap: 28px; scroll-margin-top: 24px; }
+.sec-intro { display: grid; gap: 10px; max-width: 62ch; }
+.sec-intro p { color: var(--muted); }
+
+/* Thesis */
+.thesis { background: var(--surface); border-radius: 22px; padding: clamp(22px, 4vw, 44px); display: grid; gap: 30px; border: 1px solid var(--line); }
+.thesis-head { display: grid; gap: 8px; }
+.thesis-head h3 { font-size: clamp(1.55rem, 3vw, 2.1rem); }
+.thesis-head .en { color: var(--muted); font-style: italic; }
+.thesis-body { display: grid; grid-template-columns: 1fr auto; gap: 36px; align-items: start; }
+.thesis-body > * { min-width: 0; }
+.prose { display: grid; gap: 14px; max-width: 62ch; }
+.nums { display: grid; gap: 14px; }
+.num { width: 132px; aspect-ratio: 1; max-width: 100%; border-radius: 50%; background: var(--moss-soft); display: grid; place-content: center; text-align: center; padding: 10px; }
+.num b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 2.4rem; line-height: 1; color: var(--moss); font-variant-numeric: tabular-nums; }
+.num span { font-size: 0.82rem; color: var(--muted); line-height: 1.25; margin-top: 4px; }
+.num.lake { background: color-mix(in srgb, var(--lake) 16%, transparent); }
+.num.lake b { color: var(--lake); }
+.findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding-top: 26px; border-top: 1px dashed var(--line); }
+.finding { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.finding h4 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+.finding h4::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--moss); }
+.finding.barrier h4::before { background: var(--berry); }
+.finding p { font-size: 0.97rem; color: var(--muted); }
+.methods { font-size: 0.97rem; }
+.methods b { font-weight: 600; }
+@media (max-width: 760px) {
+  .thesis-body { grid-template-columns: 1fr; }
+  .nums { grid-template-columns: repeat(2, auto); justify-content: start; }
+  .num { width: 116px; }
+  .findings { grid-template-columns: 1fr; }
+}
+
+/* Project cards */
+.projects { display: grid; gap: 40px; }
+.project { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: grid; }
+.project .cover { background: var(--moss-soft); padding: clamp(14px, 3vw, 28px) clamp(14px, 3vw, 28px) 0; }
+.project .cover img { display: block; width: 100%; height: auto; max-width: 100%; border-radius: 10px 10px 0 0; box-shadow: 0 -1px 0 var(--line), 0 10px 30px -18px rgba(20, 35, 25, .5); }
+.project-body { padding: clamp(20px, 3.5vw, 36px); display: grid; gap: 18px; }
+.project-body > * { min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.85rem; }
+.chip { padding: 3px 11px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.chip.client { border-color: transparent; background: color-mix(in srgb, var(--lake) 14%, transparent); color: var(--lake); font-weight: 500; }
+.project h3 { font-size: clamp(1.4rem, 2.8vw, 1.85rem); }
+.project .text { max-width: 64ch; display: grid; gap: 14px; }
+.facts { display: grid; grid-template-columns: 120px 1fr; gap: 8px 20px; margin: 0; font-size: 0.98rem; max-width: 70ch; }
+.facts dt { font-weight: 600; color: var(--moss); }
+.facts dd { margin: 0; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0; }
+.steps li { flex: 1 1 140px; min-width: 0; padding: 12px 14px 12px 0; position: relative; }
+.steps li::before { content: ""; display: block; height: 4px; border-radius: 4px; background: var(--moss); opacity: calc(0.35 + var(--i) * 0.16); margin-bottom: 10px; }
+.steps b { display: block; font-weight: 600; font-size: 0.95rem; }
+.steps span { color: var(--muted); font-size: 0.87rem; }
+.gallery { display: grid; gap: 14px; }
+.gallery figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+.gallery img { display: block; width: 100%; height: auto; max-width: 100%; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
+.gallery figcaption { font-size: 0.85rem; color: var(--muted); }
+.gallery.duo { grid-template-columns: 1.3fr 1fr; align-items: start; }
+.gallery.device { grid-template-columns: 2.6fr 1fr; align-items: start; }
+.tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 0.85rem; }
+.tags li { padding: 2px 10px; border-radius: 6px; background: var(--moss-soft); color: var(--moss); font-weight: 500; }
+.credit { font-size: 0.8rem; color: var(--muted); }
+@media (max-width: 600px) {
+  .gallery.duo { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: 1fr; gap: 0; }
+  .facts dd { margin-bottom: 10px; }
+}
+
+/* Skills + background */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
+.two > * { min-width: 0; }
+.skillset { display: grid; gap: 24px; }
+.skill h3 { font-family: var(--body); font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.pebbles { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.pebbles li { padding: 4px 13px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 0.92rem; }
+.rings { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.rings li { display: grid; grid-template-columns: 22px 1fr; gap: 14px; }
+.rings .dot { position: relative; }
+.rings .dot::before { content: ""; position: absolute; left: 5px; top: 7px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--moss); background: var(--bg); z-index: 1; }
+.rings .dot::after { content: ""; position: absolute; left: 10px; top: 7px; bottom: -7px; width: 2px; background: var(--line); }
+.rings li:last-child .dot::after { display: none; }
+.rings .content { padding-bottom: 24px; }
+.rings .yr { font-size: 0.85rem; color: var(--moss); font-weight: 600; font-variant-numeric: tabular-nums; }
+.rings b { display: block; font-weight: 600; }
+.rings p { color: var(--muted); font-size: 0.96rem; }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+
+/* Contact band */
+.contact { background: var(--moss); color: var(--surface); border-radius: 22px; overflow: hidden; display: grid; grid-template-columns: minmax(220px, 0.85fr) 1.15fr; gap: 0; }
+.contact > * { min-width: 0; }
+.contact-photo { margin: 0; min-height: 340px; }
+.contact-photo img { display: block; width: 100%; height: 100%; max-width: 100%; object-fit: cover; object-position: 40% 30%; }
+.contact-text { padding: clamp(24px, 5vw, 48px); display: grid; gap: 18px; align-content: center; }
+@media (max-width: 700px) {
+  .contact { grid-template-columns: 1fr; }
+  .contact-photo { min-height: 0; height: 300px; }
+}
+.contact h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); max-width: 22ch; }
+.contact .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.contact .pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 999px; background: color-mix(in srgb, var(--surface) 14%, transparent); color: var(--surface); text-decoration: none; font-weight: 500; }
+.contact .pill button { font: inherit; font-size: 0.8rem; font-weight: 600; border: 0; background: var(--surface); color: var(--moss); padding: 2px 10px; border-radius: 999px; cursor: pointer; }
+.contact a:focus-visible, .contact button:focus-visible { outline-color: var(--surface); }
+footer { color: var(--muted); font-size: 0.88rem; }
+
+/* Mobile: sidebar becomes a header */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .side { border-right: 0; border-bottom: 1px solid var(--line); }
+  .side-inner { position: relative; max-height: none; padding-block: 32px 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); grid-template-columns: auto 1fr; gap: 18px 20px; align-items: center; }
+  .portrait { width: 96px; height: 96px; }
+  .who h1 { font-size: 1.7rem; }
+  .side nav, .side-contact, .theme-toggle { grid-column: 1 / -1; }
+  .side nav ul { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .side nav a::before { display: none; }
+  .side-contact { display: none; }
+  main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 36px 32px; gap: 64px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side" aria-label="Esittely ja valikko">
+    <canvas id="contours" aria-hidden="true"></canvas>
+    <div class="side-inner">
+      <img class="portrait" src="images/krista.jpg" alt="Krista Poutanen" width="400" height="400">
+      <div class="who">
+        <h1>Krista Poutanen</h1>
+        <p class="degrees">Sairaanhoitaja (AMK)<br>FM, Human-Technology Interaction</p>
+      </div>
+      <nav aria-label="Päävalikko">
+        <ul>
+          <li><a href="#gradu">Pro gradu</a></li>
+          <li><a href="#projektit">Projektit</a></li>
+          <li><a href="#osaaminen">Osaaminen</a></li>
+          <li><a href="#yhteys">Yhteystiedot</a></li>
+        </ul>
+      </nav>
+      <div class="side-contact">
+        <span class="copy"><span id="side-email">krista.poutanen@live.fi</span><button type="button" data-copy="side-email">Kopioi</button></span>
+        <a href="https://www.linkedin.com/in/krista-poutanen-941512203/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false"><span class="knob" aria-hidden="true"></span><span class="tt-label">Tumma teema</span></button>
+    </div>
+  </aside>
+
+  <main id="top">
+    <header class="lead">
+      <p class="eyebrow">Portfolio</p>
+      <h2>Leikkaussalista <em>käyttäjäkokemukseen</em></h2>
+      <p>Olen leikkaussalisairaanhoitaja, jolla on lähes kymmenen vuoden kokemus kirurgisesta hoitotyöstä, ja filosofian maisteri vuorovaikutteisen teknologian alalta. Haaveenani on päästä suunnittelemaan, tutkimaan ja kehittämään toimivia digitaalisia terveydenhuollon palveluita niin potilaille kuin ammattilaisille.</p>
+    </header>
+
+    <section class="sec" id="gradu" aria-label="Pro gradu -tutkielma">
+      <p class="eyebrow">Pro gradu -tutkielma · 2025</p>
+      <article class="thesis">
+        <div class="thesis-head">
+          <h3>Digitaalisten hoitopolkujen hyväksyntä lastenkirurgiassa</h3>
+          <p class="en">Factors Affecting the Acceptance of Digital Care Pathways in Pediatric Surgery</p>
+        </div>
+        <div class="thesis-body">
+          <div class="prose">
+            <p>Tutkin TaysPolku-sovelluksen käyttöönottoa lastenkirurgisten potilaiden ja heidän perheidensä näkökulmasta. TaysPolku tarjoaa perheille hoitopolun aikajanana: tietoa toimenpiteestä, valmistautumisohjeet, muistutukset ja viestikanavan hoitoyksikköön.</p>
+            <p>Toteutin laadullisen haastattelututkimuksen. Suunnittelin teemahaastattelurungon teknologian hyväksynnän mallien (TAM, UTAUT, UTAUT2) pohjalta, laadin ikätasoille sopivat tiedote- ja suostumuslomakkeet sekä analysoin aineiston teoriaohjaavalla sisällönanalyysillä.</p>
+            <p class="methods"><b>Menetelmät:</b> teemahaastattelut, teoriaohjaava sisällönanalyysi</p>
+            <p><a href="https://trepo.tuni.fi/bitstream/handle/10024/229512/PoutanenKrista.pdf?sequence=2&amp;isAllowed=y" target="_blank" rel="noopener">Lue koko tutkielma Trepossa (PDF) ↗</a></p>
+          </div>
+          <div class="nums" aria-label="Aineisto lukuina">
+            <div class="num"><b>11</b><span>teema&shy;haastattelua</span></div>
+            <div class="num lake"><b>6</b><span>analyysin pääluokkaa</span></div>
+          </div>
+        </div>
+        <div class="findings">
+          <div class="finding"><h4>Myönteinen kokonaiskuva</h4><p>Sovellus koettiin hyödylliseksi ja helppokäyttöiseksi. Perheet omasivat hyvät digitaidot ja myönteinen asenne terveyden digipalveluihin.</p></div>
+          <div class="finding barrier"><h4>Esteenä tieto ja tunnistautuminen</h4><p>Käyttöönottoa estivät puutteellinen tieto sovelluksesta ja sen tarkoituksesta sekä yli 12-vuotiailta puuttuvat tunnistautumisvälineet.</p></div>
+          <div class="finding"><h4>Kehitysehdotukset</h4><p>Yhtenäinen nimeäminen (TaysPolku vs. verkkopoliklinikka), systemaattinen tiedottaminen ennen käyttöönottoa ja tuki ensimmäisellä kirjautumiskerralla.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="sec" id="projektit" aria-label="Projektit">
+      <div class="sec-intro">
+        <p class="eyebrow">Projektit</p>
+        <p>Projekteja, joissa olen tehnyt esimerkiksi käyttäjätutkimusta, prototypointia, kehitystä ja projektinhallintaa. Osa projekteista on toteutettu oikeille asiakkaille.</p>
+      </div>
+
+      <div class="projects">
+        <article class="project">
+          <div class="cover"><img src="images/dvv-prototyyppi-etusivu.jpg" alt="Kontti-palvelun prototyypin etusivu: Korkeakouluopiskelijan tehtävälista" width="767" height="428"></div>
+          <div class="project-body">
+            <div class="chips"><span class="chip client">Asiakas: Digi- ja väestötietovirasto</span><span class="chip">Methods of Human-Centered Design</span></div>
+            <h3>Korkeakouluopintojen aloittamisen yksinkertaistaminen</h3>
+            <div class="text"><p>Keräsimme tietoa opintonsa aloittaneilta ja suunnittelimme digitaalisen palvelun, jonka tarkoituksena olisi korkeakouluopintojen aloituksen sujuvoittaminen.</p></div>
+            <ol class="steps" aria-label="Suunnitteluprosessi">
+              <li style="--i:0"><b>Käyttäjätutkimus</b><span>Haastattelut, kyselyt, persoonat</span></li>
+              <li style="--i:1"><b>Nykytilan arviointi</b><span>User journey mapping</span></li>
+              <li style="--i:2"><b>Ideointi</b><span>Brainstormaus, rautalankamallit</span></li>
+              <li style="--i:3"><b>Prototypointi</b><span>Työpöytäversio Figmalla</span></li>
+              <li style="--i:4"><b>Testaus ja iterointi</b><span>Muutokset palautteen pohjalta</span></li>
+            </ol>
+            <div class="gallery">
+              <figure><img src="images/dvv-journey.jpg" alt="User journey map korkeakouluopintojen aloittamisesta: opiskelupaikan vastaanotto, ilmoittautuminen, maksut, tuet ja muutto" width="976" height="396" loading="lazy"><figcaption>User journey map: opiskelijan polku opiskelupaikan vastaanotosta muuttoon</figcaption></figure>
+              <div class="gallery duo">
+                <figure><img src="images/dvv-kokemuskartta.jpg" alt="Kokemuskartta, jossa käyttäjän askeleet, palvelut, tunteet ja kehitystarpeet vaiheittain" width="786" height="413" loading="lazy"><figcaption>Kokemuskartta: askeleet, palvelut, tunteet ja tarpeet</figcaption></figure>
+                <figure><img src="images/dvv-prototyyppi-tehtavat.jpg" alt="Prototyypin tehtävälistanäkymä, jossa tehtävien tila on merkitty väreillä" width="610" height="600" loading="lazy"><figcaption>Prototyyppi: tehtävälista tilamerkinnöin</figcaption></figure>
+              </div>
+            </div>
+            <ul class="tags"><li>Figma</li><li>Haastattelut</li><li>Persoonat</li><li>User journey</li></ul>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="cover"><img src="images/dashboard-kokonaisuus.jpg" alt="Tampere Data Dashboard: kartta postinumeroalueista, koulutustaso- ja toimintapiirakat Tahmelalle sekä mediaanitulot alueittain" width="1600" height="1271" loading="lazy"></div>
+          <div class="project-body">
+            <div class="chips"><span class="chip client">Parityö</span><span class="chip">Information Analytics and Visualization</span></div>
+            <h3>Tampere Neighborhood Explorer</h3>
+            <div class="text"><p>Interaktiivinen dashboard Tampereen 36 postinumeroalueen väestö- ja sosioekonomisesta rakenteesta. Aineisto on Tilastokeskuksen Paavo-tietokannasta: väkiluku, tulot, koulutustaso ja pääasiallinen toiminta. Kohderyhminä asukkaat, yhdistykset sekä kaupunkisuunnittelijat.</p></div>
+            <dl class="facts">
+              <dt>Kartta</dt><dd>Folium-kartta, jossa merkkien koko kuvaa väkilukua ja lämpökarttakerros väestötiheyttä</dd>
+              <dt>Kaaviot</dt><dd>Mediaanitulot pylväinä alueittain; pylvään klikkaus päivittää koulutustaso- ja toimintapiirakat valitulle alueelle</dd>
+              <dt>Toteutus</dt><dd>Pythonilla toteutettu Dash-sovellus</dd>
+              <dt>Jatkokehitys</dt><dd>Väestöpyramidi, historiallinen data muutosten tarkasteluun, ohjeistus käyttäjälle ja kartan linkitys muihin kaavioihin</dd>
+            </dl>
+            <div class="gallery duo">
+              <figure><img src="images/dashboard-ponnahdus.jpg" alt="Kartan ponnahdusikkuna Hervannasta: pinta-ala, väkiluku, keski-ikä ja mediaanitulot" width="662" height="469" loading="lazy"><figcaption>Ponnahdusikkuna alueen perustiedoista</figcaption></figure>
+              <figure><img src="images/dashboard-lampokartta.jpg" alt="Lämpökarttakerros, joka näyttää Tampereen väestötiheyden" width="605" height="429" loading="lazy"><figcaption>Väestötiheyden lämpökartta</figcaption></figure>
+            </div>
+            <p class="credit">Karttapohja © OpenStreetMapin tekijät</p>
+            <ul class="tags"><li>Python</li><li>Dash</li><li>Plotly</li><li>Folium</li><li>pyproj</li><li>Avoin data</li></ul>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="cover"><img src="images/monitorointi-tyopoyta.jpg" alt="Työpöytänäkymä, jossa usean potilaan vitaaliarvot ja käyrät rinnakkain" width="485" height="267" loading="lazy"></div>
+          <div class="project-body">
+            <div class="chips"><span class="chip client">Asiakas: Tampereen yliopiston lääketieteen ja terveysteknologian tiedekunta</span><span class="chip">Software Engineering Project</span></div>
+            <h3>Potilaan monitorointi</h3>
+            <div class="text"><p>Jatkoimme aiemman projektitiimin aloittamaa työtä. Tiimimme rakensi Android-mobiilisovelluksen yksittäisen potilaan tarkkailuun sekä työpöytäversion usean potilaan samanaikaiseen seurantaan.</p></div>
+            <dl class="facts">
+              <dt>Roolini</dt><dd>Junior developer ja UX/UI-suunnittelija</dd>
+              <dt>Tein</dt><dd>Rautalankamallit ja prototyypit sekä näkymien toteutuksen mobiili- ja web-sovellukseen</dd>
+            </dl>
+            <div class="gallery device">
+              <figure><img src="images/monitorointi-mobiili.jpg" alt="Mobiilinäkymä yhden potilaan vitaaliarvoista: syke, ST, SpO2 ja hengitystaajuus" width="278" height="477" loading="lazy" style="max-width:220px"><figcaption>Mobiilinäkymä yhden potilaan seurantaan</figcaption></figure>
+            </div>
+            <ul class="tags"><li>Flutter</li><li>Dart</li><li>Docker</li><li>Git</li><li>Figma</li></ul>
+          </div>
+        </article>
+
+        <article class="project">
+          <div class="cover"><img src="images/verkkokauppa-tyopoyta.jpg" alt="Uudistetun verkkokaupan etusivu työpöydällä: Home essentials -nosto ja Best deals -osio" width="951" height="540" loading="lazy"></div>
+          <div class="project-body">
+            <div class="chips"><span class="chip client">Asiakas: verkkokauppayritys</span><span class="chip">Software Engineering Project</span></div>
+            <h3>Verkkokaupan uudelleensuunnittelu</h3>
+            <div class="text"><p>Alkuperäinen verkkokauppa oli rakennettu Shopifyn teemoilla, ja siinä oli saavutettavuus- ja suorituskykyongelmia. Tavoitteena oli skaalautuvampi sivusto, parempi käyttökokemus ja hakukonenäkyvyys.</p></div>
+            <dl class="facts">
+              <dt>Roolini</dt><dd>Projektipäällikkö ja asiakasyhteyshenkilö, UX/UI-suunnittelu</dd>
+              <dt>Tein</dt><dd>Projektin koordinoinnin, asiakasviestinnän, tulevien ominaisuuksien prototypoinnin ja dokumentaation</dd>
+            </dl>
+            <div class="gallery device">
+              <figure><img src="images/verkkokauppa-mobiili.jpg" alt="Verkkokaupan etusivu kokonaisuudessaan mobiilinäkymänä" width="365" height="941" loading="lazy" style="max-width:220px"><figcaption>Koko etusivu mobiilissa</figcaption></figure>
+            </div>
+            <ul class="tags"><li>React.js</li><li>Shopify Hydrogen</li><li>Oxygen</li><li>Storefront API</li><li>GraphQL</li><li>Figma</li></ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="osaaminen" aria-labelledby="osa-h">
+      <div class="sec-intro">
+        <p class="eyebrow">Osaaminen ja tausta</p>
+        <h2 id="osa-h" style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Hoitotyön ja teknologian välissä</h2>
+      </div>
+      <div class="two">
+        <div class="skillset">
+          <div class="skill"><h3>Käyttäjätutkimus ja suunnittelu</h3><ul class="pebbles"><li>Haastattelut</li><li>Kyselyt</li><li>Käytettävyystestaus</li><li>Sisällönanalyysi</li><li>Figma</li><li>Adobe XD</li></ul></div>
+          <div class="skill"><h3>Kehitys</h3><ul class="pebbles"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>React.js</li><li>SQL</li><li>Python</li><li>C++</li><li>Dart</li></ul></div>
+          <div class="skill"><h3>Terveydenhuollon tietojärjestelmät</h3><ul class="pebbles"><li>Uranus</li><li>Centricity Opera</li><li>PACS</li><li>RIS</li></ul></div>
+          <div class="skill"><h3>Kielet</h3><p>Suomi (äidinkieli) · Englanti (sujuva) · Ruotsi (tyydyttävä)</p></div>
+        </div>
+        <ul class="rings" aria-label="Koulutus ja työkokemus">
+          <li><span class="dot"></span><div class="content"><span class="yr">2022–2025</span><b>Filosofian maisteri, Human-Technology Interaction</b><p>Tampereen yliopisto. Sivuaineena markkinointi.</p></div></li>
+          <li><span class="dot"></span><div class="content"><span class="yr">2020–2022</span><b>Luonnontieteiden kandidaatti, tietojenkäsittelytiede</b><p>Tampereen yliopisto. Kandidaatintutkielma: käytettävyys terveydenhuollon tietojärjestelmien hankinnoissa. Sivuaineena kauppatieteet.</p></div></li>
+          <li><span class="dot"></span><div class="content"><span class="yr">2017–</span><b>Leikkaussalisairaanhoitaja</b><p>Pirkanmaan hyvinvointialue. Instrumentoiva ja valvova hoitaja gastrokirurgian, yleiskirurgian, lastenkirurgian ja urologian toimenpiteissä. Lisäksi uusien työntekijöiden perehdytys ja yksikön intranetin ylläpito.</p></div></li>
+          <li><span class="dot"></span><div class="content"><span class="yr">2014–2017</span><b>Sairaanhoitaja (AMK)</b><p>Tampereen ammattikorkeakoulu, perioperatiivinen hoitotyö.</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec contact" id="yhteys" aria-labelledby="yht-h">
+      <figure class="contact-photo"><img src="images/valmistuminen.jpg" alt="Krista Poutanen istuu mäntymetsässä Tampereen yliopiston kansio kädessään" width="700" height="759" loading="lazy"></figure>
+      <div class="contact-text">
+        <p class="eyebrow" style="color:inherit;opacity:.8">Yhteystiedot</p>
+        <h2 id="yht-h">Etsin tehtäviä terveysteknologian ja UX:n parissa</h2>
+        <div class="row">
+          <span class="pill"><span id="email">krista.poutanen@live.fi</span><button type="button" data-copy="email">Kopioi</button></span>
+          <a class="pill" href="https://www.linkedin.com/in/krista-poutanen-941512203/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2026 Krista Poutanen · Tampere</footer>
+  </main>
+</div>
+
+<script>
+// Teemanvaihto: vaalea / tumma
+(function () {
+  var root = document.documentElement, btn = document.getElementById('theme-toggle');
+  var mq = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+  function isDark() { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : !!(mq && mq.matches); }
+  function sync() { btn.setAttribute('aria-pressed', isDark() ? 'true' : 'false'); }
+  try { var saved = localStorage.getItem('kp-theme'); if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved); } catch (e) {}
+  sync();
+  btn.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('kp-theme', next); } catch (e) {}
+    sync();
+  });
+  if (mq && mq.addEventListener) mq.addEventListener('change', sync);
+  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+
+// Kopioi-painikkeet
+document.querySelectorAll('[data-copy]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var el = document.getElementById(btn.dataset.copy);
+    function done() { btn.textContent = 'Kopioitu'; setTimeout(function () { btn.textContent = 'Kopioi'; }, 1800); }
+    function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    try { navigator.clipboard.writeText(el.textContent).then(done, fallback); } catch (e) { fallback(); }
+  });
+});
+
+// Korkeuskäyrät sivupalkin taustalle
+(function () {
+  var c = document.getElementById('contours'); if (!c) return;
+  var ctx = c.getContext('2d');
+  function noise(x, y) {
+    return Math.sin(x * 1.7 + Math.sin(y * 0.9) * 1.3) * 0.5 + Math.sin(y * 1.3 - x * 0.6 + 2.1) * 0.35 + Math.sin((x + y) * 2.3 + 0.7) * 0.15;
+  }
+  function draw() {
+    var w = c.clientWidth, h = c.clientHeight, dpr = Math.min(devicePixelRatio || 1, 2);
+    if (!w || !h) return;
+    c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--contour').trim() || '#4d6a37';
+    ctx.lineWidth = 1; ctx.globalAlpha = 0.35;
+    var step = 7, cols = Math.ceil(w / step) + 1, rows = Math.ceil(h / step) + 1, f = [];
+    for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) f.push(noise(i * step / 160, j * step / 160));
+    ctx.beginPath();
+    for (var lvl = -0.9; lvl <= 0.9; lvl += 0.15) {
+      for (var j = 0; j < rows - 1; j++) for (var i = 0; i < cols - 1; i++) {
+        var a = f[j*cols+i], b = f[j*cols+i+1], d = f[(j+1)*cols+i], e = f[(j+1)*cols+i+1];
+        var x = i * step, y = j * step, pts = [];
+        function edge(v1, v2, x1, y1, x2, y2) { if ((v1 < lvl) !== (v2 < lvl)) { var t = (lvl - v1) / (v2 - v1); pts.push([x1 + (x2-x1)*t, y1 + (y2-y1)*t]); } }
+        edge(a, b, x, y, x+step, y); edge(b, e, x+step, y, x+step, y+step);
+        edge(e, d, x+step, y+step, x, y+step); edge(d, a, x, y+step, x, y);
+        if (pts.length >= 2) { ctx.moveTo(pts[0][0], pts[0][1]); ctx.lineTo(pts[1][0], pts[1][1]); }
+        if (pts.length === 4) { ctx.moveTo(pts[2][0], pts[2][1]); ctx.lineTo(pts[3][0], pts[3][1]); }
+      }
+    }
+    ctx.stroke();
+  }
+  draw();
+  var t; addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 150); });
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw); } catch (e) {}
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+})();
+
+// Aktiivinen valikkokohta
+(function () {
+  var links = document.querySelectorAll('.side nav a');
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) links.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + en.target.id ? 'true' : 'false'); });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('main section[id]').forEach(function (s) { io.observe(s); });
+})();
+</script>
+</body>
+</html>
