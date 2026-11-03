@@ -208,6 +208,80 @@ footer { color: var(--muted); font-size: 0.88rem; }
   .side-contact { display: none; }
   main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 36px 32px; gap: 64px; }
 }
+
+/* Tulostus / Tallenna PDF:nä: A4, vaalea teema, ei katkoksia korttien ja kuvien keskellä */
+@page { size: A4; margin: 14mm 14mm 16mm; }
+@media print {
+  :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+    --bg: #ffffff; --surface: #f6f7f2; --side: #eef1ea; --ink: #1c2920; --muted: #4a574e;
+    --line: #c9d1c2; --moss: #4d6a37; --moss-soft: #dbe4cf; --lake: #2f6577; --berry: #9e3b3f; --contour: #4d6a37;
+    color-scheme: light;
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { background: #fff; font-size: 10pt; line-height: 1.5; }
+  a { color: var(--lake); text-decoration: none; }
+
+  /* Sivupalkki tiiviiksi otsakkeeksi */
+  .shell { display: block; }
+  .side { background: transparent; border: 0; border-bottom: 1px solid var(--line); }
+  .side canvas, .side nav, .theme-toggle, .copy button, .contact .pill button { display: none !important; }
+  .side-inner { position: static; max-height: none; overflow: visible; padding: 0 0 5mm; display: grid; grid-template-columns: auto 1fr auto; gap: 0 6mm; align-items: center; }
+  .portrait { width: 24mm; height: 24mm; }
+  .who h1 { font-size: 20pt; }
+  .side-contact { display: grid !important; grid-column: auto !important; gap: 2px; font-size: 9pt; text-align: right; }
+  .side-contact a::after { content: " linkedin.com/in/krista-poutanen-941512203"; color: var(--muted); }
+  .side-contact a { font-size: 0; }
+  .side-contact a::after { font-size: 9pt; }
+
+  main { display: block; max-width: none; padding: 6mm 0 0; }
+  main > * + * { margin-top: 8mm; }
+  .lead { gap: 3mm; }
+  .lead h2 { font-size: 24pt; max-width: none; }
+  .lead p:not(.eyebrow) { font-size: 11pt; max-width: none; }
+  .sec { gap: 5mm; }
+
+  /* Pro gradu pysyy yhtenä */
+  .thesis { padding: 7mm; gap: 6mm; border-radius: 12px; break-inside: avoid; }
+  .thesis-body { grid-template-columns: 1fr auto; gap: 7mm; }
+  .nums { grid-template-columns: 1fr; }
+  .num { width: 26mm; }
+  .num b { font-size: 20pt; }
+  .findings { grid-template-columns: repeat(3, 1fr); gap: 5mm; padding-top: 5mm; }
+
+  /* Jokainen projekti omalle sivulleen */
+  #projektit { break-before: page; }
+  .projects { display: block; }
+  .project { break-before: page; border-radius: 12px; }
+  .projects .project:first-child { break-before: avoid; }
+  .project .cover { padding: 5mm 5mm 0; }
+  .project .cover img { width: auto; max-width: 100%; max-height: 72mm; margin: 0 auto; }
+  .project { display: block; }
+  .project-body { display: block; padding: 6mm; }
+  .project-body > * + * { margin-top: 4mm; }
+  .project .text, .facts { max-width: none; }
+  .steps li { flex-basis: 25mm; padding-block: 2mm; }
+  .gallery img { max-height: 70mm; width: auto; max-width: 100%; }
+  /* Ensimmäinen projekti (DVV) tiivistetään yhdelle sivulle */
+  .projects .project:first-child .cover img { max-height: 42mm; }
+  .gallery:has(.duo) { gap: 3mm; }
+  .gallery:has(.duo) > figure img { max-height: 40mm; }
+  .gallery.duo { align-items: end; }
+  .gallery.duo img { max-height: 42mm; }
+  .gallery.duo { grid-template-columns: 1fr 1fr; }
+  .gallery.device { grid-template-columns: auto; justify-content: start; }
+
+  /* Osaaminen ja yhteystiedot samalle sivulle */
+  #osaaminen { break-before: page; }
+  .two { grid-template-columns: 1fr 1fr; gap: 8mm; }
+  .contact { grid-template-columns: 45mm 1fr; border-radius: 12px; break-inside: avoid; }
+  .contact-photo { min-height: 0; height: auto; }
+  .contact-text { padding: 7mm; gap: 4mm; }
+  .contact h2 { font-size: 16pt; }
+
+  .thesis, .finding, .project-body > *, figure, .gallery, .steps, .facts, .skill, .rings li, .contact, h2, h3, h4 { break-inside: avoid; }
+  h2, h3, h4, .eyebrow, .chips { break-after: avoid; }
+  img { break-inside: avoid; }
+}
 </style>
 </head>
 <body>
